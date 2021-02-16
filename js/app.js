@@ -1,7 +1,7 @@
 'use strict';
 
 let totalClicks = 0;
-let clicksAllowed = 3;
+let clicksAllowed = 25;
 let allProducts = [];
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
@@ -46,7 +46,6 @@ function renderProducts() {
   let randomNum1 = getRandomProduct();
   let randomNum2 = getRandomProduct();
   let randomNum3 = getRandomProduct();
-  console.log(randomNum1, randomNum2, randomNum3);
   if (randomNum1 === randomNum2 || randomNum3 === randomNum1 || randomNum2 === randomNum3) {
     renderProducts();
   } else {
