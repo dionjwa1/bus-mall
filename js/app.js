@@ -1,7 +1,7 @@
 'use strict';
 
 let totalClicks = 0;
-let clicksAllowed = 3;
+let clicksAllowed = 10;
 let allProducts = [];
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
@@ -55,13 +55,10 @@ function renderProducts() {
     allProducts[randomNum1].views++;
     allProducts[randomNum2].views++;
     allProducts[randomNum3].views++;
-    console.log(allProducts[randomNum1]);
     image2.src = allProducts[randomNum2].src;
+    image2.setAttribute('name', `${allProducts[randomNum2].name}`);
     image3.src = allProducts[randomNum3].src;
-
-    image1.addEventListener('click', handleClick);
-    image2.addEventListener('click', handleClick);
-    image3.addEventListener('click', handleClick);
+    image3.setAttribute('name', `${allProducts[randomNum3].name}`);
   }
 
 }
@@ -70,18 +67,20 @@ function renderResults() {
   let myList = document.querySelector('ul');
   for (let i = 0; i < allProducts.length; i++) {
     let li = document.createElement('li');
-    li.textContent = `${allProducts[i].name} had ${allProducts[i].views} votes, and was seen ${allProducts[i].clicks} times`;
+    li.textContent = `${allProducts[i].name} had ${allProducts[i].clicks} votes, and was seen ${allProducts[i].views} times`;
     myList.appendChild(li);
   }
 }
 function handleClick(event) {
   totalClicks++;
-  let productClicked = event.target.title;
-
-  for (let i = 0; i < allProducts.length; i++)
+  console.log(totalClicks, 'totalClicks');
+  let productClicked = event.target.name;
+  console.log(productClicked);
+  for (let i = 0; i < allProducts.length; i++) {
     if (productClicked === allProducts[i].name) {
       allProducts[i].clicks++;
     }
+  }
   renderProducts();
   if (totalClicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleClick);
@@ -89,6 +88,7 @@ function handleClick(event) {
   }
 }
 function handleButtonClick(event) {
+  console.log(handleButtonClick);
   if (totalClicks === clicksAllowed) {
     renderResults();
   }
