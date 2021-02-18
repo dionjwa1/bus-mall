@@ -1,17 +1,12 @@
 'use strict';
 
 let totalClicks = 0;
-<<<<<<< HEAD
 let clicksAllowed = 25;
-=======
-let clicksAllowed = 10;
->>>>>>> 43e04a5f3e321eafb7d8b203c150dfa5961867f4
 let allProducts = [];
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
 let image3 = document.querySelector('section img:nth-child(3)');
 let myContainer = document.querySelector('section');
-let myButton = document.querySelector('div');
 
 function Products(name, fileExtension = '.jpg') {
   this.name = name;
@@ -41,6 +36,7 @@ new Products('unicorn');
 new Products('usb', '.gif');
 new Products('water-can');
 new Products('wine-glass');
+
 // *DevMod Math.Random
 function getRandomProduct() {
   return Math.floor(Math.random() * allProducts.length);
@@ -66,14 +62,7 @@ function renderProducts() {
 
 }
 
-function renderResults() {
-  let myList = document.querySelector('ul');
-  for (let i = 0; i < allProducts.length; i++) {
-    let li = document.createElement('li');
-    li.textContent = `${allProducts[i].name} had ${allProducts[i].clicks} votes, and was seen ${allProducts[i].views} times`;
-    myList.appendChild(li);
-  }
-}
+
 function handleClick(event) {
   totalClicks++;
   console.log(totalClicks, 'totalClicks');
@@ -87,18 +76,63 @@ function handleClick(event) {
   renderProducts();
   if (totalClicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleClick);
-    renderResults();
+    renderChart();
   }
 }
-function handleButtonClick(event) {
-  console.log(handleButtonClick);
-  if (totalClicks === clicksAllowed) {
-    renderResults();
-  }
 
-}
+
 
 renderProducts();
 
+function renderChart() {
+  let productNames = [];
+  let productViews = [];
+  let productClicks = [];
+  for (let i = 0; i < allProducts.length; i++) {
+    productNames.push(allProducts[i].name);
+    productViews.push(allProducts[i].view);
+    productClicks.push(allProducts[i].clicks);
+  }
+  // console.log('productNames: ', productNames);
+
+  var chartObject = {
+    type: 'bar',
+    data: {
+      labels: allProducts,
+      datasets: [{
+        label: '# of Views',
+        data: productViews,
+        backgroundColor:
+          'rgba(54, 162, 235, 0.2)',
+        borderColor:
+          'rgba(255, 99, 132, 1)',
+        borderWidth: 3
+      },
+      {
+        label: '# of Clicks',
+        data: productClicks,
+        backgroundColor:
+          'purple',
+        borderColor:
+          'rgba(255, 99, 132, 1)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  };
+
+
+  let ctx = document.getElementById('myChart').getContext('2d');
+  let myChart = new Chart(ctx, chartObject);
+}
+
 myContainer.addEventListener('click', handleClick);
-myButton.addEventListener('click', handleButtonClick);
+
