@@ -98,7 +98,7 @@ function renderChart() {
   var chartObject = {
     type: 'bar',
     data: {
-      labels: allProducts,
+      labels: productNames,
       datasets: [{
         label: '# of Views',
         data: productViews,
