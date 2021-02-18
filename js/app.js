@@ -3,6 +3,7 @@
 let totalClicks = 0;
 let clicksAllowed = 25;
 let allProducts = [];
+let indexArray = [];
 let image1 = document.querySelector('section img:first-child');
 let image2 = document.querySelector('section img:nth-child(2)');
 let image3 = document.querySelector('section img:nth-child(3)');
@@ -43,22 +44,26 @@ function getRandomProduct() {
 }
 
 function renderProducts() {
-  let randomNum1 = getRandomProduct();
-  let randomNum2 = getRandomProduct();
-  let randomNum3 = getRandomProduct();
-  if (randomNum1 === randomNum2 || randomNum3 === randomNum1 || randomNum2 === randomNum3) {
-    renderProducts();
-  } else {
-    image1.src = allProducts[randomNum1].src;
-    image1.setAttribute('name', `${allProducts[randomNum1].name}`);
-    allProducts[randomNum1].views++;
-    allProducts[randomNum2].views++;
-    allProducts[randomNum3].views++;
-    image2.src = allProducts[randomNum2].src;
-    image2.setAttribute('name', `${allProducts[randomNum2].name}`);
-    image3.src = allProducts[randomNum3].src;
-    image3.setAttribute('name', `${allProducts[randomNum3].name}`);
+  while (indexArray.length < 6) {
+    let randomNum = getRandomProduct();
+    while (!indexArray.includes(randomNum)) {
+      indexArray.push(randomNum);
+    }
   }
+
+  let randomNum1 = indexArray.shift();
+  let randomNum2 = indexArray.shift();
+  let randomNum3 = indexArray.shift();
+
+  image1.src = allProducts[randomNum1].src;
+  image1.setAttribute('title', `${allProducts[randomNum1].name}`);
+  allProducts[randomNum1].views++;
+  allProducts[randomNum2].views++;
+  allProducts[randomNum3].views++;
+  image2.src = allProducts[randomNum2].src;
+  image2.setAttribute('title', `${allProducts[randomNum2].name}`);
+  image3.src = allProducts[randomNum3].src;
+  image3.setAttribute('title', `${allProducts[randomNum3].name}`);
 
 }
 
@@ -66,7 +71,7 @@ function renderProducts() {
 function handleClick(event) {
   totalClicks++;
   console.log(totalClicks, 'totalClicks');
-  let productClicked = event.target.name;
+  let productClicked = event.target.title;
   console.log(productClicked);
   for (let i = 0; i < allProducts.length; i++) {
     if (productClicked === allProducts[i].name) {
@@ -90,7 +95,7 @@ function renderChart() {
   let productClicks = [];
   for (let i = 0; i < allProducts.length; i++) {
     productNames.push(allProducts[i].name);
-    productViews.push(allProducts[i].view);
+    productViews.push(allProducts[i].views);
     productClicks.push(allProducts[i].clicks);
   }
   // console.log('productNames: ', productNames);
@@ -98,7 +103,7 @@ function renderChart() {
   var chartObject = {
     type: 'bar',
     data: {
-      labels: allProducts,
+      labels: productNames,
       datasets: [{
         label: '# of Views',
         data: productViews,
