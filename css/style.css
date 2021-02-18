@@ -3,14 +3,25 @@ body {
   background-color: lavender;
 }
 
+header {
+text-align: center;
+}
+
 h1 {
+display: inline-block;
 font-size:3em;
-text-align:center;
+border: 5px solid;
+padding: 10px;
+background-color: rgb(11, 158, 243);
 }
 
 h3 {
-  font-size:1.5;
-  text-align:center;
+font-size:2em;
+display: inline-block;
+border: 5px solid;
+padding: 10px;
+margin-bottom:25px;
+background-color: rgba(241, 241, 238, 0.986);
 }
 
 section {
@@ -28,6 +39,11 @@ img:hover{
   cursor: pointer;
 }
 
+img {
+  width: 400px;
+  height: 300px;
+}
+
 div {
   background-color: green;
   padding: 5px;
@@ -36,10 +52,16 @@ div {
   margin: auto;
   margin-top:25px;
   margin-bottom:25px;
-  
-
 }
 
 div:hover{
   cursor: pointer;
+}
+
+canvas {
+  border: 1px solid;
+  margin: 25px;
+  padding: 10px;
+  width: 300px;
+  height: 300px;
 }

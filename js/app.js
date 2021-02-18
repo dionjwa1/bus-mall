@@ -36,6 +36,7 @@ new Products('unicorn');
 new Products('usb', '.gif');
 new Products('water-can');
 new Products('wine-glass');
+
 // *DevMod Math.Random
 function getRandomProduct() {
   return Math.floor(Math.random() * allProducts.length);
@@ -75,7 +76,7 @@ function handleClick(event) {
   renderProducts();
   if (totalClicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleClick);
-    renderResults();
+    renderChart();
   }
 }
 
@@ -83,43 +84,55 @@ function handleClick(event) {
 
 renderProducts();
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [{
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
+function renderChart() {
+  let productNames = [];
+  let productViews = [];
+  let productClicks = [];
+  for (let i = 0; i < allProducts.length; i++) {
+    productNames.push(allProducts[i].name);
+    productViews.push(allProducts[i].view);
+    productClicks.push(allProducts[i].clicks);
   }
-});
+  // console.log('productNames: ', productNames);
+
+  var chartObject = {
+    type: 'bar',
+    data: {
+      labels: allProducts,
+      datasets: [{
+        label: '# of Views',
+        data: productViews,
+        backgroundColor:
+          'rgba(54, 162, 235, 0.2)',
+        borderColor:
+          'rgba(255, 99, 132, 1)',
+        borderWidth: 3
+      },
+      {
+        label: '# of Clicks',
+        data: productClicks,
+        backgroundColor:
+          'purple',
+        borderColor:
+          'rgba(255, 99, 132, 1)',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  };
+
+
+  let ctx = document.getElementById('myChart').getContext('2d');
+  let myChart = new Chart(ctx, chartObject);
+}
 
 myContainer.addEventListener('click', handleClick);
 
