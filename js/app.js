@@ -16,27 +16,34 @@ function Products(name, fileExtension = '.jpg') {
   allProducts.push(this);
 }
 
-new Products('bag');
-new Products('banana');
-new Products('bathroom');
-new Products('boots');
-new Products('breakfast');
-new Products('bubblegum');
-new Products('chair');
-new Products('cthulhu');
-new Products('dog-duck');
-new Products('dragon');
-new Products('pen');
-new Products('pet-sweep');
-new Products('scissors');
-new Products('shark');
-new Products('sweep', '.png');
-new Products('tauntaun');
-new Products('unicorn');
-new Products('usb', '.gif');
-new Products('water-can');
-new Products('wine-glass');
+let retrievedProducts = localStorage.getItem('products');
 
+if (retrievedProducts) {
+  let parsedProducts = JSON.parse(retrievedProducts);
+  allProducts = parsedProducts;
+} else {
+
+  new Products('bag');
+  new Products('banana');
+  new Products('bathroom');
+  new Products('boots');
+  new Products('breakfast');
+  new Products('bubblegum');
+  new Products('chair');
+  new Products('cthulhu');
+  new Products('dog-duck');
+  new Products('dragon');
+  new Products('pen');
+  new Products('pet-sweep');
+  new Products('scissors');
+  new Products('shark');
+  new Products('sweep', '.png');
+  new Products('tauntaun');
+  new Products('unicorn');
+  new Products('usb', '.gif');
+  new Products('water-can');
+  new Products('wine-glass');
+}
 // *DevMod Math.Random
 function getRandomProduct() {
   return Math.floor(Math.random() * allProducts.length);
@@ -77,6 +84,8 @@ function handleClick(event) {
   if (totalClicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleClick);
     renderChart();
+    let stringProducts = JSON.stringify(allProducts);
+    localStorage.setItem('product', stringProducts);
   }
 }
 
@@ -90,10 +99,9 @@ function renderChart() {
   let productClicks = [];
   for (let i = 0; i < allProducts.length; i++) {
     productNames.push(allProducts[i].name);
-    productViews.push(allProducts[i].view);
+    productViews.push(allProducts[i].views);
     productClicks.push(allProducts[i].clicks);
   }
-  // console.log('productNames: ', productNames);
 
   var chartObject = {
     type: 'bar',
@@ -131,7 +139,7 @@ function renderChart() {
 
 
   let ctx = document.getElementById('myChart').getContext('2d');
-  let myChart = new Chart(ctx, chartObject);
+  let myChart = new Chart(ctx, chartObject); 
 }
 
 myContainer.addEventListener('click', handleClick);
