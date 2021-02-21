@@ -90,7 +90,7 @@ function handleClick(event) {
     myContainer.removeEventListener('click', handleClick);
     renderChart();
     let stringProducts = JSON.stringify(allProducts);
-    localStorage.setItem('product', stringProducts);
+    localStorage.setItem('products', stringProducts);
   }
 }
 
